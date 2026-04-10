@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc:*)",
+      "Bash(du:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(conda --version)",
+      "Bash(conda info:*)",
+      "Bash(conda run:*)",
+      "Bash(nvcc --version)",
+      "Bash(nvidia-smi)",
+      "Bash(conda search:*)",
+      "Bash(pip index:*)",
+      "Bash(conda install:*)",
+      "Bash(conda config:*)"
+    ]
+  }
+}
