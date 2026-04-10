@@ -75,6 +75,16 @@ def main():
     if n_stacks < 2:
         raise ValueError("Need at least 2 stacks")
 
+    # 【关键修复】同步截断相似度对表！
+    # 计算前 n_stacks 个栈对应的总对数
+    total_pairs_needed = n_stacks * (n_stacks - 1) // 2
+
+    # 1. 只保留前 total_pairs_needed 行相似度对
+    df_measures = df_measures.head(total_pairs_needed).copy()
+
+    # 2. 重置索引，确保从 0 开始连续
+    df_measures = df_measures.reset_index(drop=True)
+
     if "stackTraceCusto" not in df_distinct_stacks.columns:
         raise ValueError("Expected column 'stackTraceCusto' in frequent_stack_traces.csv")
 

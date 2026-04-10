@@ -9,26 +9,50 @@ def get_index_sim(n, a, b) :
     return int(((2*n - (a+1)) * a) / 2 + (b - a) -1)
 
 #  将一维扁平索引 x 转换回二维的两个栈索引 (a, b)（需满足 a < b）。
-def get_indices_sim(n, x) :
-    
-    if x < n - 1 :
-        return (0, x + 1)   
-    
-    else :
-        lower_bound = int(n - 1.5 - math.sqrt((n - 1.5)**2 - 2*(x - n + 1)))
-        upper_bound = int(n - 0.5 - math.sqrt((n - 0.5)**2 - 2*x)) + 1
-        
-        tmp = lower_bound
-        continu = True
-        while continu :
-            if ((2*n - (tmp+1)) * tmp) / 2 <= x :
-                a = tmp
-                tmp += 1
-            
-            else : 
-                continu = False
-            
-        return (a, int(x - (((2*n - (a+1)) * a) / 2) + a + 1))
+# def get_indices_sim(n, x) :
+#
+#     if x < n - 1 :
+#         return (0, x + 1)
+#
+#     else :
+#         lower_bound = int(n - 1.5 - math.sqrt((n - 1.5)**2 - 2*(x - n + 1)))
+#         upper_bound = int(n - 0.5 - math.sqrt((n - 0.5)**2 - 2*x)) + 1
+#
+#         tmp = lower_bound
+#         continu = True
+#         while continu :
+#             if ((2*n - (tmp+1)) * tmp) / 2 <= x :
+#                 a = tmp
+#                 tmp += 1
+#
+#             else :
+#                 continu = False
+#
+#         return (a, int(x - (((2*n - (a+1)) * a) / 2) + a + 1))
+def get_indices_sim(n, x):
+    """
+    将一维扁平索引 x 转换回二维栈索引 (i, j) (i < j)
+    使用 O(1) 数学公式，添加严格边界检查，彻底避免死循环
+    """
+    # 1. 严格边界检查（关键！）
+    total_pairs = n * (n - 1) // 2
+    if x < 0 or x >= total_pairs:
+        raise ValueError(
+            f"索引越界！n={n} 时有效索引范围是 [0, {total_pairs - 1}]，但收到 x={x}"
+        )
+
+    # 2. 使用求根公式直接计算 i (O(1) 复杂度)
+    # 推导：解二次方程 i^2 - (2n-1)i + 2x = 0
+    sqrt_term = math.sqrt((2 * n - 1) ** 2 - 8 * x)
+    i = int((2 * n - 1 - sqrt_term) // 2)
+
+    # 3. 计算 j
+    sum_before_i = i * (2 * n - i - 1) // 2
+    j = i + 1 + (x - sum_before_i)
+
+    return (i, j)
+
+
 
 #  返回行的索引
 def rowIndex(row):
